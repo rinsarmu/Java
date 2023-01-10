@@ -42,6 +42,10 @@ public class Registration extends Application {
         prevBtn = new Button("< prev");
         nextBtn = new Button("Next >");
 
+        searchArea = new TextArea();
+        searchedGpa = new Label();
+        searchedName =  new Label();
+
 
         Label id = new Label("ID: ");
         Label name = new Label("Name: ");
@@ -187,11 +191,6 @@ public class Registration extends Application {
 
     private void viewPage(Stage stage){
 
-        searchArea = new TextArea();
-
-        searchedGpa = new Label("3.4");
-        searchedName =  new Label("robera");
-
         VBox vboxSearch = new VBox(searchArea, searchBtn, searchedName, searchedGpa, nextBtn,prevBtn);
 
         Scene scene = new Scene(vboxSearch, 400,400);
@@ -210,12 +209,16 @@ public class Registration extends Application {
             Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             String query = "SELECT * FROM student where id ="+searchedId;
             ResultSet resultSet = statement.executeQuery(query);
+            String name = "";
+            String gpa = "";
             while(resultSet.next()){
+                name = resultSet.getString("name");
+                gpa = resultSet.getString("gpa");
                 searchedName.setText(resultSet.getString("name"));
                 searchedGpa.setText(resultSet.getString("gpa"));
             }
-            System.out.println("gpa :" + searchedGpa);
-            System.out.println("Name :" + searchedName);
+            System.out.println("gpa :" + gpa);
+            System.out.println("Name :" + name);
             con.close();
 //            Connection con = new Driver
         } catch (ClassNotFoundException | SQLException e) {
