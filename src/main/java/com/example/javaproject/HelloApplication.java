@@ -38,7 +38,7 @@ public class HelloApplication extends Application {
     boolean passFlag = false;
     boolean isSaved = false;
     boolean isLoggedIn = false;
-    String initialDirect = "C:\\Users";
+    String initialDirect = "/home/kuusaa/Documents";
     String loggedType = "notepad";
     String fileLocation = " ";
     String fileName = " ";
