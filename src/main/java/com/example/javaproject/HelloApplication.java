@@ -22,11 +22,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.sql.*;
 import java.util.EventListener;
 
 public class HelloApplication extends Application {
-    String pswd = "1234";
-    String user = "rinsarmu";
+   static String pswd = "";
+    static String user = "";
     boolean numeric = false;
     boolean userFlag = false;
     boolean passFlag = false;
@@ -40,6 +41,7 @@ public class HelloApplication extends Application {
     @Override
 
     public void start(Stage stage) throws IOException {
+
         //===========[ Variable and scene declaration start=> ]===========
         Label errorPassword = new Label();
         Label errorUserName = new Label();
@@ -136,7 +138,6 @@ public class HelloApplication extends Application {
 //===========[ UI to the child and stylize top to bottom <= ]===========
 
 //===========[ Action start => ]===========
-
 
 
         login.setOnMouseEntered(e->{
@@ -357,7 +358,33 @@ public class HelloApplication extends Application {
         writer.close();
     }
 
+    private static void LoginDb(){
+        System.out.println("Db functionality....");
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/Registration","root", "root@123");
+            System.out.println("connection....");
+
+            Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String query = "SELECT * FROM login";
+            ResultSet resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                user = resultSet.getString("username");
+                pswd = resultSet.getString("password");
+            }
+            con.close();
+//            Connection con = new Driver
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     public static void main(String[] args) {
+        LoginDb();
+        System.out.println("user"+ user);
+        System.out.println("password"+ pswd);
         launch();
     }
 }
