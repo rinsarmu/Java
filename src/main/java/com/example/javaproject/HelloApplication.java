@@ -52,8 +52,50 @@ public class HelloApplication extends Application {
         VBox layout1 = new VBox(10);
         VBox buttons = new VBox(20);
         VBox boxFields = new VBox(25);
+        VBox layout2 = new VBox(25);
+
+        // --- Menu Item
+        MenuItem undo = new MenuItem("Open");
+        MenuItem cut = new MenuItem("Save");
+        MenuItem copy = new MenuItem("Save as");
+        MenuItem paste = new MenuItem("Exit");
+        MenuItem delete = new MenuItem("Exit");
+        MenuItem find = new MenuItem("Exit");
+        MenuItem findNext = new MenuItem("Exit");
+        MenuItem findPrevious = new MenuItem("Exit");
+        MenuItem replace = new MenuItem("Exit");
+
+        // --- EDIT Item
+        MenuItem item1 = new MenuItem("Open");
+        MenuItem item2 = new MenuItem("Save");
+        MenuItem item3 = new MenuItem("Save as");
+        MenuItem item4 = new MenuItem("Exit");
+        MenuBar menuBar = new MenuBar();
+
+        // --- Menu File
+        Menu menuFile = new Menu("File");
+        Menu menuEdit = new Menu("Edit");
+        Menu menuView = new Menu("View");
+        FileChooser fileChooser = new FileChooser();
+
+        //Scene
+        scene2 = new Scene(layout2, 400, 500);
+        scene1 = new Scene(boxFields, 400, 400);
+
+        DropShadow dropShadow = new DropShadow();
 
 //===========[ Variable and scene declaration <= end ]===========
+
+        //===========[ Variable and scene declaration <= end ]===========
+
+
+//===========[ Adding childrens to the parent  start => ]===========
+
+        buttons.getChildren().addAll(login, exit);
+
+
+//===========[  Adding childrens to the parent <= end ]===========
+
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
