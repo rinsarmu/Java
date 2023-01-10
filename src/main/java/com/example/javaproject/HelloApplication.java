@@ -6,9 +6,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -36,12 +38,11 @@ public class HelloApplication extends Application {
     String fileName = " ";
     String phoneNumber = "1212121212";
     Stage window;
-    Scene scene1, scene2, scene3;
-
+    Scene scene1, scene2, scene3, scene;
     @Override
 
     public void start(Stage stage) throws IOException {
-
+//        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
         //===========[ Variable and scene declaration start=> ]===========
         Label errorPassword = new Label();
         Label errorUserName = new Label();
@@ -80,7 +81,25 @@ public class HelloApplication extends Application {
         Menu menuView = new Menu("View");
         FileChooser fileChooser = new FileChooser();
 
+        //Folder Icon
+        InputStream folder = new FileInputStream("/home/kuusaa/Pictures/image/folder.png");
+        Image folderImage = new Image(folder);
+        ImageView imageView = new ImageView();
+
+        //Notepad Icon
+        InputStream notePad = new FileInputStream("/home/kuusaa/Pictures/image/folder.png");
+        Image notePadImage = new Image(notePad);
+        ImageView notePadView = new ImageView();
+
+        //Registration Icon
+        InputStream register = new FileInputStream("/home/kuusaa/Pictures/image/folder.png");
+        Image registerImage = new Image(register);
+        ImageView registerView = new ImageView();
+
+        Group root = new Group();
+
         //Scene
+        scene = new Scene(root, 595, 370);
         scene2 = new Scene(layout2, 400, 500);
         scene1 = new Scene(boxFields, 400, 400);
         window = stage;
@@ -97,6 +116,8 @@ public class HelloApplication extends Application {
         menuEdit.getItems().addAll(undo,cut,copy,paste,delete);
         menuBar.getMenus().addAll(menuFile,menuEdit, menuView);
         layout2.getChildren().addAll(menuBar, editText);
+
+        root.getChildren().addAll(imageView, notePadView, registerView);
 
         window.setScene(scene1);
         window.setTitle("Login Page");
@@ -135,7 +156,29 @@ public class HelloApplication extends Application {
 
         layout1.setPadding(new Insets(10d));
         boxFields.setPadding(new Insets(10d, 20d, 10d, 20d));
-//===========[ UI to the child and stylize top to bottom <= ]===========
+
+        //Icons
+        imageView.setImage(folderImage);
+        imageView.setX(50);
+        imageView.setY(70);
+        imageView.setFitWidth(100);
+        imageView.setPreserveRatio(true);
+
+
+
+        notePadView.setImage(notePadImage);
+        notePadView.setX(170);
+        notePadView.setY(85);
+        notePadView.setFitWidth(80);
+        notePadView.setPreserveRatio(true);
+
+
+        registerView.setImage(registerImage);
+        registerView.setX(300);
+        registerView.setY(90);
+        registerView.setFitWidth(60);
+        registerView.setPreserveRatio(true);
+//===========[ UI to the child and stylize top to bottom <=end ]===========
 
 //===========[ Action start => ]===========
 
