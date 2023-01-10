@@ -138,7 +138,21 @@ public class Registration extends Application {
         searchBtn.setOnAction(e->{
             System.out.println("search btn");
             System.out.println(searchArea.getText());
+            searchedId = parseId(searchArea.getText());
             showData();
+        });
+        nextBtn.setOnAction(e->{
+            searchedId ++;
+            showData();
+
+
+        });
+
+        prevBtn.setOnAction(e->{
+            searchedId--;
+            showData();
+
+
         });
 
         Scene scene = new Scene(vb, 400d, 500d);
@@ -187,7 +201,6 @@ public class Registration extends Application {
     }
 
     private void showData(){
-        searchedId = parseId(searchArea.getText());
         try {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
