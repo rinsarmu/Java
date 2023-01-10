@@ -354,8 +354,6 @@ public class HelloApplication extends Application {
 //===========[ Action END <= ]===========
 
 
-
-
     }
 
     private void saveTextToFile(String sampleText, File file) throws FileNotFoundException {
@@ -390,8 +388,6 @@ public class HelloApplication extends Application {
 
     public static void main(String[] args) {
         LoginDb();
-        System.out.println("user"+ user);
-        System.out.println("password"+ pswd);
         launch();
     }
 }
