@@ -28,10 +28,20 @@ public class Registration extends Application {
     static String [] listId = new String[8];
     static  double checkGrade = 0;
     boolean alertId = true;
-    TextArea idArea, nameArea, gradeArea;
+    TextArea idArea, nameArea, gradeArea, searchArea;
+    int searchedId;
+    int currentId = 0;
+    Label searchedName, searchedGpa;
+    Button searchBtn, nextBtn,prevBtn;
+
 
 
     public void start(Stage stage) throws IOException {
+        //search
+        searchBtn = new Button("Search");
+        prevBtn = new Button("< prev");
+        nextBtn = new Button("Next >");
+
 
         Label id = new Label("ID: ");
         Label name = new Label("Name: ");
@@ -122,7 +132,13 @@ public class Registration extends Application {
         });
 
         view.setOnAction(e->{
-            System.out.println("view");
+            viewPage(stage);
+
+        });
+        searchBtn.setOnAction(e->{
+            System.out.println("search btn");
+            System.out.println(searchArea.getText());
+            showData();
         });
 
         Scene scene = new Scene(vb, 400d, 500d);
@@ -153,6 +169,51 @@ public class Registration extends Application {
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void viewPage(Stage stage){
+
+        searchArea = new TextArea();
+
+        searchedGpa = new Label("3.4");
+        searchedName =  new Label("robera");
+
+        VBox vboxSearch = new VBox(searchArea, searchBtn, searchedName, searchedGpa, nextBtn,prevBtn);
+
+        Scene scene = new Scene(vboxSearch, 400,400);
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    private void showData(){
+        searchedId = parseId(searchArea.getText());
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/Registration","root", "root@123");
+            System.out.println("connection....");
+
+            Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String query = "SELECT * FROM student where id ="+searchedId;
+            ResultSet resultSet = statement.executeQuery(query);
+            while(resultSet.next()){
+                searchedName.setText(resultSet.getString("name"));
+                searchedGpa.setText(resultSet.getString("gpa"));
+            }
+            System.out.println("gpa :" + searchedGpa);
+            System.out.println("Name :" + searchedName);
+            con.close();
+//            Connection con = new Driver
+        } catch (ClassNotFoundException | SQLException e) {
+//            throw new RuntimeException(e);
+            System.out.println("ID not found");
+        }
+
+    }
+
+    private Integer parseId(String id){
+        return Integer.parseInt(String.valueOf(id));
     }
 
     public static void main(String[] args) {
