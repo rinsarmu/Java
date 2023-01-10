@@ -28,6 +28,8 @@ public class Registration extends Application {
     static String [] listId = new String[8];
     static  double checkGrade = 0;
     boolean alertId = true;
+    TextArea idArea, nameArea, gradeArea;
+
 
     public void start(Stage stage) throws IOException {
 
@@ -37,8 +39,8 @@ public class Registration extends Application {
         Label grade = new Label("Grade: ");
 
         TextArea idArea = new TextArea();
-        TextArea nameArea = new TextArea();
-        TextArea gradeArea = new TextArea();
+         nameArea = new TextArea();
+         gradeArea = new TextArea();
 
         Button cancel = new Button("Cancel");
         Button save = new Button("Save");
@@ -119,6 +121,10 @@ public class Registration extends Application {
 
         });
 
+        view.setOnAction(e->{
+            System.out.println("view");
+        });
+
         Scene scene = new Scene(vb, 400d, 500d);
 //scene.getStylesheets().add(HelloApplication.class.getResource("style.css ").toExternalForm());
         scene.getStylesheets().add("HelloApplication/style.css");
@@ -138,8 +144,8 @@ public class Registration extends Application {
             Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             String query = "INSERT INTO student(name,gpa) Values(?,?)";
            PreparedStatement preparedStatement = con.prepareStatement(query);
-           preparedStatement.setString(1, "Sagni alemayo");
-            preparedStatement.setString(2, "3.4");
+           preparedStatement.setString(1, nameArea.getText());
+            preparedStatement.setString(2, gradeArea.getText());
             preparedStatement.executeUpdate();
 
             con.close();
