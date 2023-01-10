@@ -27,13 +27,19 @@ import java.io.*;
 import java.sql.*;
 import java.util.EventListener;
 
+
 public class HelloApplication extends Application {
-   static String pswd = "";
+    Registration reg = new Registration();
+
+    static String pswd = "";
     static String user = "";
     boolean numeric = false;
     boolean userFlag = false;
     boolean passFlag = false;
     boolean isSaved = false;
+    boolean isLoggedIn = false;
+    String initialDirect = "C:\\Users";
+    String loggedType = "notepad";
     String fileLocation = " ";
     String fileName = " ";
     String phoneNumber = "1212121212";
@@ -87,12 +93,12 @@ public class HelloApplication extends Application {
         ImageView imageView = new ImageView();
 
         //Notepad Icon
-        InputStream notePad = new FileInputStream("/home/kuusaa/Pictures/image/folder.png");
+        InputStream notePad = new FileInputStream("/home/kuusaa/Pictures/image/notepad.jpg");
         Image notePadImage = new Image(notePad);
         ImageView notePadView = new ImageView();
 
         //Registration Icon
-        InputStream register = new FileInputStream("/home/kuusaa/Pictures/image/folder.png");
+        InputStream register = new FileInputStream("/home/kuusaa/Pictures/image/register.jpg");
         Image registerImage = new Image(register);
         ImageView registerView = new ImageView();
 
@@ -119,7 +125,7 @@ public class HelloApplication extends Application {
 
         root.getChildren().addAll(imageView, notePadView, registerView);
 
-        window.setScene(scene1);
+        window.setScene(scene);
         window.setTitle("Login Page");
         window.show();
 
@@ -164,14 +170,11 @@ public class HelloApplication extends Application {
         imageView.setFitWidth(100);
         imageView.setPreserveRatio(true);
 
-
-
         notePadView.setImage(notePadImage);
         notePadView.setX(170);
         notePadView.setY(85);
         notePadView.setFitWidth(80);
         notePadView.setPreserveRatio(true);
-
 
         registerView.setImage(registerImage);
         registerView.setX(300);
@@ -182,6 +185,35 @@ public class HelloApplication extends Application {
 
 //===========[ Action start => ]===========
 
+        notePadView.setOnMouseClicked(e ->{
+            if (isLoggedIn) {
+                window.setScene(scene2);
+                window.setTitle("Notepad Page");
+
+            } else {
+                loggedType = "notepad";
+                window.setScene(scene1);
+
+            }
+            System.out.println("Image");
+
+        });
+
+        registerView.setOnMouseClicked(e->{
+            if (isLoggedIn) {
+                                window.setScene(scene2);
+                try {
+                    reg.start(stage);
+                    System.out.println("jd");
+
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            } else {
+                loggedType = "register";
+                window.setScene(scene1);
+            }
+        });
 
         login.setOnMouseEntered(e->{
             login.setEffect(dropShadow);
@@ -216,20 +248,7 @@ public class HelloApplication extends Application {
             String check = userText.getText();
             numeric = check.matches("-?\\d+(\\.\\d+)?");
             System.out.println(numeric);
-            if (numeric) {
-                if (phoneNumber.equals(check)) {
-                    userText.setStyle("-fx-border-color: #dddfe2;");
-                    errorUserName.setText("");
-                    userFlag = true;
-                } else {
-                    System.out.println("Incorrect.");
-                    errorUserName.setText("Error in phone number");
-                    window.setScene(scene1);
-                    userFlag = false;
-                    userText.setStyle("-fx-border-color: #red;");
 
-                }
-            } else {
                 if (user.equals(check)) {
                     errorUserName.setText("");
                     userFlag = true;
@@ -243,7 +262,6 @@ public class HelloApplication extends Application {
                     userText.setStyle("-fx-border-color: red;");
 
                 }
-            }
 
             if (pswd.equals(passText.getText())) {
                 errorPassword.setText("");
@@ -261,8 +279,30 @@ public class HelloApplication extends Application {
             if (passFlag && userFlag) {
                 System.out.println("Logged in");
                 System.out.println(check);
-                window.setScene(scene2);
-                window.setTitle("Untitled - Notepad");
+                switch(loggedType){
+                    case "notepad" :
+                        window.setScene(scene2);
+                        window.setTitle("Untitle - Notepad");
+                        break;
+                    case  "register" :
+                        try {
+                            reg.start(stage);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        break;
+
+                    case "folder" :
+                        window.setScene(scene2);
+                        window.setTitle("Untitle - Notepad");
+                        break;
+
+                    default:
+                        window.setScene(scene2);
+                        window.setTitle("Untitle - Notepad");
+
+                }
+
             } else {
                 System.out.println("UserName doesnot exist");
             }
@@ -277,14 +317,8 @@ public class HelloApplication extends Application {
         open.setOnAction(e->{
 
             // File system;
-            fileChooser.setTitle("Open Resource FIle");
-            if(fileLocation.isBlank()){
-                fileChooser.setInitialDirectory(new File("/home/kuusaa/Documents"));
-
-            } else {
-                fileChooser.setInitialDirectory(new File(fileLocation));
-
-            }
+            fileChooser.setTitle("Open");
+            fileChooser.setInitialDirectory(new File(initialDirect));
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("Text Files", "*.txt"),
                     new FileChooser.ExtensionFilter("pdf Files", "*.pdf")
@@ -313,7 +347,7 @@ public class HelloApplication extends Application {
                     }
                     System.out.println(line);
                     //                editText.setText((line));
-                    editText.appendText(line);
+                    editText.appendText(line + "\n");
                 }
 
             }
@@ -324,6 +358,8 @@ public class HelloApplication extends Application {
 
         //        Save Action
         item2.setOnAction(e->{
+            fileChooser.setTitle("Save");
+            fileChooser.setInitialDirectory(new File(initialDirect));
             String sampleText = editText.getText();
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
             fileChooser.getExtensionFilters().add(extFilter);
@@ -334,10 +370,11 @@ public class HelloApplication extends Application {
             if (fileLocation.isBlank()){
                 System.out.println("not saved beore");
                 file = fileChooser.showSaveDialog(window);
+                fileLocation = file.getAbsolutePath();
 
                 //TO save the file with .txt extension if it isnot exist with it.
                 if(!file.getName().contains(".")) {
-                    file = new File(file.getAbsolutePath() + ".txt");
+                    file = new File(fileLocation + ".txt");
                 }
 
                 System.out.println(file.getAbsoluteFile());
@@ -346,7 +383,7 @@ public class HelloApplication extends Application {
                     try {
                         saveTextToFile(sampleText, file);
                     } catch (FileNotFoundException ex) {
-                        throw new RuntimeException(ex);
+                        System.out.println("line 386");;
                     }
                 }
             } else {
@@ -380,7 +417,7 @@ public class HelloApplication extends Application {
                     fileLocation = file.getAbsolutePath();
                     saveTextToFile(sampleText, file);
                 } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
+                    System.out.println("line 420");
                 }
             }
 
