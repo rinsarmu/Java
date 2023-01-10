@@ -49,7 +49,7 @@ public class HelloApplication extends Application {
 
     public void start(Stage stage) throws IOException {
 //        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
-        //===========[ Variable and scene declaration start=> ]===========
+        //===========[ Variable and scene declaration start=> ]===========.
         Label errorPassword = new Label();
         Label errorUserName = new Label();
         TextArea userText = new TextArea();
