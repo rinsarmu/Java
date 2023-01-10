@@ -284,7 +284,7 @@ public class HelloApplication extends Application {
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
             fileChooser.getExtensionFilters().add(extFilter);
 
-            System.out.println("Loca"+ fileLocation);
+            System.out.println("Location"+ fileLocation);
             File file;
 
             if (fileLocation.isBlank()){
