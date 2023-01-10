@@ -84,11 +84,7 @@ public class HelloApplication extends Application {
         window = stage;
 
         DropShadow dropShadow = new DropShadow();
-
 //===========[ Variable and scene declaration <= end ]===========
-
-        //===========[ Variable and scene declaration <= end ]===========
-
 
 //===========[ Adding childrens to the parent & scene window start => ]===========
 
@@ -100,11 +96,50 @@ public class HelloApplication extends Application {
         menuBar.getMenus().addAll(menuFile,menuEdit, menuView);
         layout2.getChildren().addAll(menuBar, editText);
 
-        window.setScene(scene2);
+        window.setScene(scene1);
         window.setTitle("Login Page");
         window.show();
 
 //===========[  Adding childrens to the parent <= end ]===========
+
+// ===========[ UI to the child and stylize top to bottom => ]===========
+        errorUserName.setTextFill(Color.rgb(255, 0, 0));
+
+        errorPassword.setTextFill(Color.rgb(255, 0, 0));
+        errorPassword.setStyle("-fx-display: none");
+
+        userText.setPrefHeight(45d);
+        userText.setFocusTraversable(false);
+        userText.setStyle("   -fx-border-width: 1px; -fx-border-style: solid; -fx-border-color: #dddfe2; -fx-font-size: 14px ");
+        userText.setPromptText("Email or Phone Number");
+        userText.setPrefWidth(364d);
+
+        passText.setPrefHeight(45d);
+        passText.setPromptText("Your Password");
+        passText.setPrefWidth(364d);
+        passText.setStyle("   -fx-border-width: 1px; -fx-border-style: solid; -fx-border-color: #dddfe2  ");
+        passText.setFocusTraversable(false);
+
+        editText.setStyle("-fx-background-color: #fff; -fx-border-color: #fff; -fx-border-width: 0; -fx-border-image-width: 0; -fx-background-image: null; -fx-region-background: null;-fx-border-insets: 0; -fx-background-size:0; -fx-border-image-insets:0;");
+        editText.setPrefHeight(500d);
+
+        login.setPrefWidth(364d);
+        login.setPrefHeight(38d);
+        login.setStyle(" -fx-border-color: none;-fx-border-radius: 20px; -fx-background-color: #1877f2;  -fx-color: red; -fx-font-weight: bold; -fx-font-size: 20px");
+
+        exit.setPrefWidth(380d);
+        exit.setPrefHeight(38d);
+        exit.setStyle(" -fx-border-color: none;-fx-border-radius: 20px; -fx-background-color: #FF9966;  -fx-color: red; -fx-font-weight: bold; -fx-font-size: 20px");
+
+        layout1.setPadding(new Insets(10d));
+        boxFields.setPadding(new Insets(10d, 20d, 10d, 20d));
+//===========[ UI to the child and stylize top to bottom <= ]===========
+
+//===========[ Action start => ]===========
+
+//===========[ Action END <= ]===========
+
+
 
     }
 
