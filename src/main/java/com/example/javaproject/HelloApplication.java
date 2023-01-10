@@ -81,6 +81,7 @@ public class HelloApplication extends Application {
         //Scene
         scene2 = new Scene(layout2, 400, 500);
         scene1 = new Scene(boxFields, 400, 400);
+        window = stage;
 
         DropShadow dropShadow = new DropShadow();
 
@@ -89,18 +90,22 @@ public class HelloApplication extends Application {
         //===========[ Variable and scene declaration <= end ]===========
 
 
-//===========[ Adding childrens to the parent  start => ]===========
+//===========[ Adding childrens to the parent & scene window start => ]===========
 
         buttons.getChildren().addAll(login, exit);
+        layout1.getChildren().addAll(errorUserName, userText, errorPassword, passText);
+        boxFields.getChildren().addAll(layout1, buttons);
+        menuFile.getItems().addAll(item1, item2, item3, item4);
+        menuEdit.getItems().addAll(undo,cut,copy,paste,delete);
+        menuBar.getMenus().addAll(menuFile,menuEdit, menuView);
+        layout2.getChildren().addAll(menuBar, editText);
 
+        window.setScene(scene2);
+        window.setTitle("Login Page");
+        window.show();
 
 //===========[  Adding childrens to the parent <= end ]===========
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
     }
 
     public static void main(String[] args) {
