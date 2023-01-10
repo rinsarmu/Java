@@ -291,6 +291,12 @@ public class HelloApplication extends Application {
             if (fileLocation.isBlank()){
                 System.out.println("not saved beore");
                 file = fileChooser.showSaveDialog(window);
+
+                //TO save the file with .txt extension if it isnot exist with it.
+                if(!file.getName().contains(".")) {
+                    file = new File(file.getAbsolutePath() + ".txt");
+                }
+
                 System.out.println(file.getAbsoluteFile());
                 fileLocation = file.getAbsolutePath();
                 if(file != null){
@@ -303,6 +309,7 @@ public class HelloApplication extends Application {
             } else {
                 file = new File(fileLocation);
                 System.out.println("Not empty");
+                window.setTitle(fileName + " Notepad");
                 try {
                     saveTextToFile(sampleText, file);
                 } catch (FileNotFoundException ex) {
