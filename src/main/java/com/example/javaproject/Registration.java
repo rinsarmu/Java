@@ -120,7 +120,7 @@ public class Registration extends Application {
 
         hbTitle.setAlignment(Pos.CENTER);
 //        VBox vb = new VBox(hbId, hbName,hbGrade, buttons);
-        VBox vb = new VBox( hbTitle,hbId,hbName, hbGrade, buttons);
+        VBox vb = new VBox( hbTitle,hbName, hbGrade, buttons);
         vb.setSpacing(15d);
         vb.setPadding(new Insets(10d));
         vb.setPrefWidth(100d);
@@ -214,8 +214,8 @@ public class Registration extends Application {
             while(resultSet.next()){
                 name = resultSet.getString("name");
                 gpa = resultSet.getString("gpa");
-                searchedName.setText(resultSet.getString("name"));
-                searchedGpa.setText(resultSet.getString("gpa"));
+                searchedName.setText("Name : " +name);
+                searchedGpa.setText("GPA : " + gpa);
             }
             System.out.println("gpa :" + gpa);
             System.out.println("Name :" + name);
