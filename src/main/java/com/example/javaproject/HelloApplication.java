@@ -45,143 +45,27 @@ public class HelloApplication extends Application {
     String phoneNumber = "1212121212";
     Stage window;
     Scene scene1, scene2, scene3, scene;
+    static Label errorPassword,errorUserName;
+    static TextArea userText,editText;
+    static PasswordField passText;
+    static  Button login,exit, cancel;
+    static  VBox  layout1, layout2, buttons,boxFields;
+    static MenuItem undo,cut,copy,paste,delete,find, findNext,findPrevious,replace,open,item2,item3,item4;
+    MenuBar menuBar;
+    static Menu menuFile,menuEdit,menuView;
+   static FileChooser fileChooser;
+    static InputStream folder,notePad,register;
+    static Image folderImage,notePadImage,registerImage;
+    static ImageView imageView,notePadView,registerView;
+    static  Group root;
+    static  DropShadow dropShadow;
     @Override
 
     public void start(Stage stage) throws IOException {
 //        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
-        //===========[ Variable and scene declaration start=> ]===========.
-        Label errorPassword = new Label();
-        Label errorUserName = new Label();
-        TextArea userText = new TextArea();
-        PasswordField passText = new PasswordField();
-        TextArea editText = new TextArea();
-        Button login = new Button("Login");
-        Button exit = new Button("Exit");
-        Button cancel = new Button("Cancel");
-        VBox layout1 = new VBox(10);
-        VBox buttons = new VBox(20);
-        VBox boxFields = new VBox(25);
-        VBox layout2 = new VBox(25);
-
-        // --- Menu Item
-        MenuItem undo = new MenuItem("Open");
-        MenuItem cut = new MenuItem("Save");
-        MenuItem copy = new MenuItem("Save as");
-        MenuItem paste = new MenuItem("Exit");
-        MenuItem delete = new MenuItem("Exit");
-        MenuItem find = new MenuItem("Exit");
-        MenuItem findNext = new MenuItem("Exit");
-        MenuItem findPrevious = new MenuItem("Exit");
-        MenuItem replace = new MenuItem("Exit");
-
-        // --- EDIT Item
-        MenuItem open = new MenuItem("Open");
-        MenuItem item2 = new MenuItem("Save");
-        MenuItem item3 = new MenuItem("Save as");
-        MenuItem item4 = new MenuItem("Exit");
-        MenuBar menuBar = new MenuBar();
-
-        // --- Menu File
-        Menu menuFile = new Menu("File");
-        Menu menuEdit = new Menu("Edit");
-        Menu menuView = new Menu("View");
-        FileChooser fileChooser = new FileChooser();
-
-        //Folder Icon
-        InputStream folder = new FileInputStream("/home/kuusaa/Pictures/image/folder.png");
-        Image folderImage = new Image(folder);
-        ImageView imageView = new ImageView();
-
-        //Notepad Icon
-        InputStream notePad = new FileInputStream("/home/kuusaa/Pictures/image/notepad.jpg");
-        Image notePadImage = new Image(notePad);
-        ImageView notePadView = new ImageView();
-
-        //Registration Icon
-        InputStream register = new FileInputStream("/home/kuusaa/Pictures/image/register.jpg");
-        Image registerImage = new Image(register);
-        ImageView registerView = new ImageView();
-
-        Group root = new Group();
-
-        //Scene
-        scene = new Scene(root, 595, 370);
-        scene2 = new Scene(layout2, 400, 500);
-        scene1 = new Scene(boxFields, 400, 400);
-        window = stage;
-
-        DropShadow dropShadow = new DropShadow();
-//===========[ Variable and scene declaration <= end ]===========
-
-//===========[ Adding childrens to the parent & scene window start => ]===========
-
-        buttons.getChildren().addAll(login, exit);
-        layout1.getChildren().addAll(errorUserName, userText, errorPassword, passText);
-        boxFields.getChildren().addAll(layout1, buttons);
-        menuFile.getItems().addAll(open, item2, item3, item4);
-        menuEdit.getItems().addAll(undo,cut,copy,paste,delete);
-        menuBar.getMenus().addAll(menuFile,menuEdit, menuView);
-        layout2.getChildren().addAll(menuBar, editText);
-
-        root.getChildren().addAll(imageView, notePadView, registerView);
-
-        window.setScene(scene);
-        window.setTitle("Login Page");
-        window.show();
-
-//===========[  Adding childrens to the parent <= end ]===========
-
-// ===========[ UI to the child and stylize top to bottom => ]===========
-        errorUserName.setTextFill(Color.rgb(255, 0, 0));
-
-        errorPassword.setTextFill(Color.rgb(255, 0, 0));
-        errorPassword.setStyle("-fx-display: none");
-
-        userText.setPrefHeight(45d);
-        userText.setFocusTraversable(false);
-        userText.setStyle("   -fx-border-width: 1px; -fx-border-style: solid; -fx-border-color: #dddfe2; -fx-font-size: 14px ");
-        userText.setPromptText("Email or Phone Number");
-        userText.setPrefWidth(364d);
-
-        passText.setPrefHeight(45d);
-        passText.setPromptText("Your Password");
-        passText.setPrefWidth(364d);
-        passText.setStyle("   -fx-border-width: 1px; -fx-border-style: solid; -fx-border-color: #dddfe2  ");
-        passText.setFocusTraversable(false);
-
-        editText.setStyle("-fx-background-color: #fff; -fx-border-color: #fff; -fx-border-width: 0; -fx-border-image-width: 0; -fx-background-image: null; -fx-region-background: null;-fx-border-insets: 0; -fx-background-size:0; -fx-border-image-insets:0;");
-        editText.setPrefHeight(500d);
-
-        login.setPrefWidth(364d);
-        login.setPrefHeight(38d);
-        login.setStyle(" -fx-border-color: none;-fx-border-radius: 20px; -fx-background-color: #1877f2;  -fx-color: red; -fx-font-weight: bold; -fx-font-size: 20px");
-
-        exit.setPrefWidth(380d);
-        exit.setPrefHeight(38d);
-        exit.setStyle(" -fx-border-color: none;-fx-border-radius: 20px; -fx-background-color: #FF9966;  -fx-color: red; -fx-font-weight: bold; -fx-font-size: 20px");
-
-        layout1.setPadding(new Insets(10d));
-        boxFields.setPadding(new Insets(10d, 20d, 10d, 20d));
-
-        //Icons
-        imageView.setImage(folderImage);
-        imageView.setX(50);
-        imageView.setY(70);
-        imageView.setFitWidth(100);
-        imageView.setPreserveRatio(true);
-
-        notePadView.setImage(notePadImage);
-        notePadView.setX(170);
-        notePadView.setY(85);
-        notePadView.setFitWidth(80);
-        notePadView.setPreserveRatio(true);
-
-        registerView.setImage(registerImage);
-        registerView.setX(300);
-        registerView.setY(90);
-        registerView.setFitWidth(60);
-        registerView.setPreserveRatio(true);
-//===========[ UI to the child and stylize top to bottom <=end ]===========
+        variableDeclaration(stage);
+        addingChildrenToParent();
+        uIDesign();
 
 //===========[ Action start => ]===========
 
@@ -245,67 +129,7 @@ public class HelloApplication extends Application {
 
         //Authentication
         login.setOnAction(e -> {
-            String check = userText.getText();
-            numeric = check.matches("-?\\d+(\\.\\d+)?");
-            System.out.println(numeric);
-
-                if (user.equals(check)) {
-                    errorUserName.setText("");
-                    userFlag = true;
-                    userText.setStyle("-fx-border-color: #dddfe2;");
-
-                } else {
-                    System.out.println("Incorrect.");
-                    errorUserName.setText("Error in username");
-                    window.setScene(scene1);
-                    userFlag = false;
-                    userText.setStyle("-fx-border-color: red;");
-
-                }
-
-            if (pswd.equals(passText.getText())) {
-                errorPassword.setText("");
-                passFlag = true;
-                passText.setStyle("-fx-border-color: #dddfe2;");
-
-            } else {
-                System.out.println("Incorrect.");
-                errorPassword.setText("Error in password");
-                window.setScene(scene1);
-                passFlag = false;
-                passText.setStyle("-fx-border-color: red;");
-
-            }
-            if (passFlag && userFlag) {
-                System.out.println("Logged in");
-                System.out.println(check);
-                switch(loggedType){
-                    case "notepad" :
-                        window.setScene(scene2);
-                        window.setTitle("Untitle - Notepad");
-                        break;
-                    case  "register" :
-                        try {
-                            reg.start(stage);
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        break;
-
-                    case "folder" :
-                        window.setScene(scene2);
-                        window.setTitle("Untitle - Notepad");
-                        break;
-
-                    default:
-                        window.setScene(scene2);
-                        window.setTitle("Untitle - Notepad");
-
-                }
-
-            } else {
-                System.out.println("UserName doesnot exist");
-            }
+            authentication();
         });
 
         //Leave the System
@@ -315,113 +139,18 @@ public class HelloApplication extends Application {
 
         // Open Action
         open.setOnAction(e->{
-
-            // File system;
-            fileChooser.setTitle("Open");
-            fileChooser.setInitialDirectory(new File(initialDirect));
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                    new FileChooser.ExtensionFilter("pdf Files", "*.pdf")
-            );
-
-            File selectedFile = fileChooser.showOpenDialog(window);
-            String line;
-
-            if (selectedFile != null) {
-                fileName = selectedFile.getName();
-                fileLocation = selectedFile.getAbsolutePath();
-                window.setTitle(fileName + " - Notepad");
-                editText.setText(" ");
-                System.out.println(selectedFile.getAbsoluteFile());
-                BufferedReader reader = null;
-                try {
-                    reader = new BufferedReader(new FileReader(selectedFile));
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-                while (true) {
-                    try {
-                        if (!((line = reader.readLine()) != null)) break;
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    System.out.println(line);
-                    //                editText.setText((line));
-                    editText.appendText(line + "\n");
-                }
-
-            }
-            System.out.println("Saved");
-
+            openFromFile();
         });
-
 
         //        Save Action
         item2.setOnAction(e->{
-            fileChooser.setTitle("Save");
-            fileChooser.setInitialDirectory(new File(initialDirect));
-            String sampleText = editText.getText();
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-            fileChooser.getExtensionFilters().add(extFilter);
-
-            System.out.println("Location"+ fileLocation);
-            File file;
-
-            if (fileLocation.isBlank()){
-                System.out.println("not saved beore");
-                file = fileChooser.showSaveDialog(window);
-                fileLocation = file.getAbsolutePath();
-
-                //TO save the file with .txt extension if it isnot exist with it.
-                if(!file.getName().contains(".")) {
-                    file = new File(fileLocation + ".txt");
-                }
-
-                System.out.println(file.getAbsoluteFile());
-                fileLocation = file.getAbsolutePath();
-                if(file != null){
-                    try {
-                        saveTextToFile(sampleText, file);
-                    } catch (FileNotFoundException ex) {
-                        System.out.println("line 386");;
-                    }
-                }
-            } else {
-                file = new File(fileLocation);
-                System.out.println("Not empty");
-                window.setTitle(fileName + " Notepad");
-                try {
-                    saveTextToFile(sampleText, file);
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-
-            }
+            saveToFile();
 
         });
 
         //Save As Action
         item3.setOnAction(e->{
-            String sampleText = editText.getText();
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-            fileChooser.getExtensionFilters().add(extFilter);
-
-            System.out.println("Loca"+ fileLocation);
-            File  file = fileChooser.showSaveDialog(window);
-            System.out.println("save as");
-
-
-            if(file != null){
-                try {
-                    fileLocation = file.getAbsolutePath();
-                    saveTextToFile(sampleText, file);
-                } catch (FileNotFoundException ex) {
-                    System.out.println("line 420");
-                }
-            }
-
-
+            saveAsFile();
         });
 
         //Exit Action
@@ -430,12 +159,322 @@ public class HelloApplication extends Application {
 
         });
 
-
 //===========[ Action END <= ]===========
-
 
     }
 
+    private void variableDeclaration(Stage stage) throws FileNotFoundException {
+        //===========[ Variable and scene declaration start=> ]===========.
+        errorPassword = new Label();
+        errorUserName = new Label();
+        userText = new TextArea();
+        passText = new PasswordField();
+        editText = new TextArea();
+        login = new Button("Login");
+        exit = new Button("Exit");
+        cancel = new Button("Cancel");
+        layout1 = new VBox(10);
+        buttons = new VBox(20);
+        boxFields = new VBox(25);
+        layout2 = new VBox(25);
+
+        // --- Menu Item
+        undo = new MenuItem("Open");
+        cut = new MenuItem("Save");
+        copy = new MenuItem("Save as");
+        paste = new MenuItem("Exit");
+        delete = new MenuItem("Exit");
+        find = new MenuItem("Exit");
+        findNext = new MenuItem("Exit");
+        findPrevious = new MenuItem("Exit");
+        replace = new MenuItem("Exit");
+
+        // --- EDIT Item
+
+        open = new MenuItem("Open");
+        item2 = new MenuItem("Save");
+        item3 = new MenuItem("Save as");
+        item4 = new MenuItem("Exit");
+        menuBar = new MenuBar();
+
+        // --- Menu File
+        menuFile = new Menu("File");
+        menuEdit = new Menu("Edit");
+        menuView = new Menu("View");
+        fileChooser = new FileChooser();
+        //Folder Icon
+        folder = new FileInputStream("/home/kuusaa/Pictures/image/folder.png");
+        folderImage = new Image(folder);
+        imageView = new ImageView();
+
+        //Notepad Icon
+        notePad = new FileInputStream("/home/kuusaa/Pictures/image/notepad.jpg");
+        notePadImage = new Image(notePad);
+        notePadView = new ImageView();
+
+        //Registration Icon
+        register = new FileInputStream("/home/kuusaa/Pictures/image/register.jpg");
+        registerImage = new Image(register);
+        registerView = new ImageView();
+
+        root = new Group();
+
+        //Scene
+        scene = new Scene(root, 595, 370);
+        scene2 = new Scene(layout2, 400, 500);
+        scene1 = new Scene(boxFields, 400, 400);
+        window = stage;
+
+        dropShadow = new DropShadow();
+//===========[ Variable and scene declaration <= end ]===========
+
+
+    }
+    private void addingChildrenToParent() {
+        //===========[ Adding childrens to the parent & scene window start => ]===========
+
+        buttons.getChildren().addAll(login, exit);
+        layout1.getChildren().addAll(errorUserName, userText, errorPassword, passText);
+        boxFields.getChildren().addAll(layout1, buttons);
+        menuFile.getItems().addAll(open, item2, item3, item4);
+        menuEdit.getItems().addAll(undo,cut,copy,paste,delete);
+        menuBar.getMenus().addAll(menuFile,menuEdit, menuView);
+        layout2.getChildren().addAll(menuBar, editText);
+
+        root.getChildren().addAll(imageView, notePadView, registerView);
+
+        window.setScene(scene);
+        window.setTitle("Login Page");
+        window.show();
+
+//===========[  Adding childrens to the parent <= end ]===========
+
+    }
+    private void uIDesign() {
+        // ===========[ UI to the child and stylize top to bottom => ]===========
+        errorUserName.setTextFill(Color.rgb(255, 0, 0));
+
+        errorPassword.setTextFill(Color.rgb(255, 0, 0));
+        errorPassword.setStyle("-fx-display: none");
+
+        userText.setPrefHeight(45d);
+        userText.setFocusTraversable(false);
+        userText.setStyle("   -fx-border-width: 1px; -fx-border-style: solid; -fx-border-color: #dddfe2; -fx-font-size: 14px ");
+        userText.setPromptText("Email or Phone Number");
+        userText.setPrefWidth(364d);
+
+        passText.setPrefHeight(45d);
+        passText.setPromptText("Your Password");
+        passText.setPrefWidth(364d);
+        passText.setStyle("   -fx-border-width: 1px; -fx-border-style: solid; -fx-border-color: #dddfe2  ");
+        passText.setFocusTraversable(false);
+
+        editText.setStyle("-fx-background-color: #fff; -fx-border-color: #fff; -fx-border-width: 0; -fx-border-image-width: 0; -fx-background-image: null; -fx-region-background: null;-fx-border-insets: 0; -fx-background-size:0; -fx-border-image-insets:0;");
+        editText.setPrefHeight(500d);
+
+        login.setPrefWidth(364d);
+        login.setPrefHeight(38d);
+        login.setStyle(" -fx-border-color: none;-fx-border-radius: 20px; -fx-background-color: #1877f2;  -fx-color: red; -fx-font-weight: bold; -fx-font-size: 20px");
+
+        exit.setPrefWidth(380d);
+        exit.setPrefHeight(38d);
+        exit.setStyle(" -fx-border-color: none;-fx-border-radius: 20px; -fx-background-color: #FF9966;  -fx-color: red; -fx-font-weight: bold; -fx-font-size: 20px");
+
+        layout1.setPadding(new Insets(10d));
+        boxFields.setPadding(new Insets(10d, 20d, 10d, 20d));
+
+        //Icons
+        imageView.setImage(folderImage);
+        imageView.setX(50);
+        imageView.setY(70);
+        imageView.setFitWidth(100);
+        imageView.setPreserveRatio(true);
+
+        notePadView.setImage(notePadImage);
+        notePadView.setX(170);
+        notePadView.setY(85);
+        notePadView.setFitWidth(80);
+        notePadView.setPreserveRatio(true);
+
+        registerView.setImage(registerImage);
+        registerView.setX(300);
+        registerView.setY(90);
+        registerView.setFitWidth(60);
+        registerView.setPreserveRatio(true);
+//===========[ UI to the child and stylize top to bottom <=end ]===========
+
+
+    }
+    private void authentication() {
+        String check = userText.getText();
+        numeric = check.matches("-?\\d+(\\.\\d+)?");
+        System.out.println(numeric);
+
+        if (user.equals(check)) {
+            errorUserName.setText("");
+            userFlag = true;
+            userText.setStyle("-fx-border-color: #dddfe2;");
+
+        } else {
+            System.out.println("Incorrect.");
+            errorUserName.setText("Error in username");
+            window.setScene(scene1);
+            userFlag = false;
+            userText.setStyle("-fx-border-color: red;");
+
+        }
+
+        if (pswd.equals(passText.getText())) {
+            errorPassword.setText("");
+            passFlag = true;
+            passText.setStyle("-fx-border-color: #dddfe2;");
+
+        } else {
+            System.out.println("Incorrect.");
+            errorPassword.setText("Error in password");
+            window.setScene(scene1);
+            passFlag = false;
+            passText.setStyle("-fx-border-color: red;");
+
+        }
+        if (passFlag && userFlag) {
+            System.out.println("Logged in");
+            System.out.println(check);
+            switch(loggedType){
+                case "notepad" :
+                    window.setScene(scene2);
+                    window.setTitle("Untitle - Notepad");
+                    break;
+                case  "register" :
+                    try {
+                        reg.start(window);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    break;
+
+                case "folder" :
+                    window.setScene(scene2);
+                    window.setTitle("Untitle - Notepad");
+                    break;
+
+                default:
+                    window.setScene(scene2);
+                    window.setTitle("Untitle - Notepad");
+
+            }
+
+        } else {
+            System.out.println("UserName doesnot exist");
+        }
+    }
+    private void openFromFile() {
+        // File system;
+        fileChooser.setTitle("Open");
+        fileChooser.setInitialDirectory(new File(initialDirect));
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("pdf Files", "*.pdf")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(window);
+        String line;
+
+        if (selectedFile != null) {
+            fileName = selectedFile.getName();
+            fileLocation = selectedFile.getAbsolutePath();
+            window.setTitle(fileName + " - Notepad");
+            editText.setText(" ");
+            System.out.println(selectedFile.getAbsoluteFile());
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new FileReader(selectedFile));
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+            while (true) {
+                try {
+                    if (!((line = reader.readLine()) != null)) break;
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                System.out.println(line);
+                //                editText.setText((line));
+                editText.appendText(line + "\n");
+            }
+
+        }
+        System.out.println("Saved");
+
+    }
+    private void saveToFile() {
+        fileChooser.setTitle("Save");
+        fileChooser.setInitialDirectory(new File(initialDirect));
+        String sampleText = editText.getText();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        System.out.println("Location"+ fileLocation);
+        File file;
+
+        if (fileLocation.isBlank()){
+            System.out.println("not saved beore");
+            file = fileChooser.showSaveDialog(window);
+//                if(!file.exists()){
+//                    return;
+//                }
+
+            //TO save the file with .txt extension if it isnot exist with it.
+            if(!file.getName().contains(".")) {
+                fileLocation = file.getAbsolutePath();
+
+                file = new File(fileLocation + ".txt");
+            }
+
+            System.out.println(file.getAbsoluteFile());
+            fileLocation = file.getAbsolutePath();
+            if(file != null){
+                try {
+                    saveTextToFile(sampleText, file);
+                } catch (FileNotFoundException ex) {
+                    System.out.println("line 386");;
+                }
+            }
+        } else {
+            file = new File(fileLocation);
+            System.out.println("Not empty");
+            window.setTitle(fileName + " Notepad");
+            try {
+                saveTextToFile(sampleText, file);
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+
+
+        }
+
+    }
+    private void saveAsFile() {
+        String sampleText = editText.getText();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        System.out.println("Loca"+ fileLocation);
+        File  file = fileChooser.showSaveDialog(window);
+        System.out.println("save as");
+
+
+        if(file != null){
+            try {
+                fileLocation = file.getAbsolutePath();
+                saveTextToFile(sampleText, file);
+            } catch (FileNotFoundException ex) {
+                System.out.println("line 420");
+            }
+        }
+
+
+    }
     private void saveTextToFile(String sampleText, File file) throws FileNotFoundException {
         System.out.println("sample :" + sampleText);
         PrintWriter writer = new PrintWriter(file);
