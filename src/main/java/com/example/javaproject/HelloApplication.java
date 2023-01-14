@@ -27,38 +27,39 @@ import java.io.*;
 import java.sql.*;
 import java.util.EventListener;
 
-
 public class HelloApplication extends Application {
     Registration reg = new Registration();
-
     static String pswd = "";
     static String user = "";
-    boolean numeric = false;
-    boolean userFlag = false;
-    boolean passFlag = false;
-    boolean isSaved = false;
-    boolean isLoggedIn = false;
-    String initialDirect = "/home/kuusaa/Documents";
-    String loggedType = "notepad";
-    String fileLocation = " ";
-    String fileName = " ";
-    String phoneNumber = "1212121212";
+    boolean numeric = false,errorId = false,
+            alertId = true,userFlag = false,
+            passFlag = false,isSaved = false,
+            isLoggedIn = false,
+            gradeFlag = true,
+            decimalFlag = false;
+
+    String initialDirect = "/home/kuusaa/Documents",loggedType = "notepad",fileName = " ",fileLocation = " ",phoneNumber = "1212121212";
     Stage window;
-    Scene scene1, scene2, scene3, scene;
-    static Label errorPassword,errorUserName;
-    static TextArea userText,editText;
+    Scene scene1, scene2, scene3, scene,sceneStudent;
+    static Label errorPassword,errorUserName,searchedName, searchedGpa,id,name,grade;;
+    static TextArea userText,editText,idArea, nameArea, gradeArea, searchArea;;
     static PasswordField passText;
-    static  Button login,exit, cancel;
-    static  VBox  layout1, layout2, buttons,boxFields;
+    static  Button login,exit, cancel,btn,searchBtn, nextBtn,prevBtn, cancelSave,saveStudent,viewStudent;
+    static  VBox  layout1, layout2, buttons,boxFields,vb;
     static MenuItem undo,cut,copy,paste,delete,find, findNext,findPrevious,replace,open,item2,item3,item4;
     MenuBar menuBar;
     static Menu menuFile,menuEdit,menuView;
-   static FileChooser fileChooser;
+    static FileChooser fileChooser;
     static InputStream folder,notePad,register;
     static Image folderImage,notePadImage,registerImage;
     static ImageView imageView,notePadView,registerView;
-    static  Group root;
-    static  DropShadow dropShadow;
+    static Group root;
+    static DropShadow dropShadow;
+    static HBox  hbId,hbGrade,hbTitle,buttonStudent,hbName;
+
+    static String [] listId = new String[8];
+    static  double checkGrade = 0;
+    int searchedId,currentId = 0;
     @Override
 
     public void start(Stage stage) throws IOException {
@@ -159,6 +160,55 @@ public class HelloApplication extends Application {
 
         });
 
+        //Registration action
+
+        idArea.setOnKeyTyped(e->{
+            String string = idArea.getText();
+//            if(string.length() > 0)              errorId = false;
+
+            if(string.matches("^\\d+$")){
+                idArea.setStyle("-fx-text-inner-color: black; -fx-border-width: 1px; -fx-border-style: solid; -fx-border-color: #dddfe2;");
+
+            } else {
+                idArea.setStyle("-fx-text-inner-color: red; -fx-border-width: 1px; -fx-border-style: solid; -fx-border-color: red;");
+                errorId = true;
+            }
+
+        });
+
+        saveStudent.setOnAction(e ->{
+            String idEntry = idArea.getText();
+            String nameEntry = nameArea.getText();
+            String gradeEntry = gradeArea.getText();
+            String sampleText =  idEntry +","  + nameEntry +"," + gradeEntry;
+            saveDB();
+
+        });
+
+        viewStudent.setOnAction(e->{
+            viewPage(stage);
+
+        });
+        searchBtn.setOnAction(e->{
+            System.out.println("search btn");
+            System.out.println(searchArea.getText());
+            searchedId = parseId(searchArea.getText());
+            showData();
+        });
+        nextBtn.setOnAction(e->{
+            searchedId ++;
+            showData();
+
+
+        });
+
+        prevBtn.setOnAction(e->{
+            searchedId--;
+            showData();
+
+
+        });
+
 //===========[ Action END <= ]===========
 
     }
@@ -226,6 +276,35 @@ public class HelloApplication extends Application {
         window = stage;
 
         dropShadow = new DropShadow();
+
+
+        //From Registrtion
+        //search
+        searchBtn = new Button("Search");
+        prevBtn = new Button("< prev");
+        nextBtn = new Button("Next >");
+
+        searchArea = new TextArea();
+        searchedGpa = new Label();
+        searchedName =  new Label();
+        id = new Label("ID: ");
+        name = new Label("Name: ");
+        grade = new Label("Grade: ");
+
+        idArea = new TextArea();
+        nameArea = new TextArea();
+        gradeArea = new TextArea();
+        cancelSave = new Button("Cancel");
+        saveStudent = new Button("Save");
+        viewStudent = new Button("view");
+
+        hbId = new HBox(id, idArea);
+        hbName = new HBox(name, nameArea);
+        hbGrade = new HBox(grade, gradeArea);
+        buttonStudent = new HBox(cancelSave, saveStudent, viewStudent);
+        hbTitle = new HBox(new Text("Student Registration System"));
+         vb = new VBox( hbTitle,hbName, hbGrade, buttonStudent);
+        sceneStudent = new Scene(vb, 400d, 500d);
 //===========[ Variable and scene declaration <= end ]===========
 
 
@@ -301,6 +380,55 @@ public class HelloApplication extends Application {
         registerView.setY(90);
         registerView.setFitWidth(60);
         registerView.setPreserveRatio(true);
+
+        //Registration
+        hbId.setPrefWidth(400);
+        hbName.setPrefWidth(600);
+        name.setPrefWidth(100d);
+
+
+        hbId.setPrefHeight(10d);
+        hbGrade.setPrefHeight(38d);
+        hbName.setPrefHeight(38d);
+        id.setPrefWidth(80d);
+
+        //styling one by one
+        idArea.setPrefWidth(300d);
+        idArea.setPrefHeight(10d);
+        id.setPrefHeight(38d);
+        id.setPrefWidth(60d);
+        id.setAlignment(Pos.CENTER);
+        id.setPadding(new Insets(10d));
+
+        //styling one by one
+        gradeArea.setPrefWidth(300d);
+        gradeArea.setPrefHeight(10d);
+        grade.setPrefHeight(38d);
+        grade.setPrefWidth(60d);
+
+        grade.setAlignment(Pos.CENTER);
+        grade.setPadding(new Insets(10d));
+
+        //styling one by one
+        nameArea.setPrefWidth(300d);
+        nameArea.setPrefHeight(10d);
+        name.setPrefHeight(38d);
+        name.setPrefWidth(60d);
+
+        name.setAlignment(Pos.CENTER);
+        name.setPadding(new Insets(10d));
+        //style one by one
+        cancelSave.setPadding(new Insets(10d));
+        cancelSave.setStyle("-fx-border: none; -fx-background-color: #ff5722; -fx-border-radius: 12px; -fx-color: white;");
+
+        //style one by one
+
+        hbTitle.setAlignment(Pos.CENTER);
+
+        vb.setSpacing(15d);
+        vb.setPadding(new Insets(10d));
+        vb.setPrefWidth(100d);
+        vb.setAlignment(Pos.CENTER);
 //===========[ UI to the child and stylize top to bottom <=end ]===========
 
 
@@ -346,11 +474,8 @@ public class HelloApplication extends Application {
                     window.setTitle("Untitle - Notepad");
                     break;
                 case  "register" :
-                    try {
-                        reg.start(window);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                    startRegistration(window);
+//
                     break;
 
                 case "folder" :
@@ -503,6 +628,79 @@ public class HelloApplication extends Application {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private void startRegistration(Stage stage){
+        stage.setTitle("Student registration");
+        stage.setScene(sceneStudent);
+        stage.show();
+
+    }
+
+
+    private void saveDB() {
+        System.out.println("Db functionality....");
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/Registration","root", "root@123");
+            System.out.println("connection....");
+
+            Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String query = "INSERT INTO student(name,gpa) Values(?,?)";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, nameArea.getText());
+            preparedStatement.setString(2, gradeArea.getText());
+            preparedStatement.executeUpdate();
+
+            con.close();
+//            Connection con = new Driver
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void viewPage(Stage stage){
+
+        VBox vboxSearch = new VBox(searchArea, searchBtn, searchedName, searchedGpa, nextBtn,prevBtn);
+
+        Scene scene = new Scene(vboxSearch, 400,400);
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    private void showData(){
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/Registration","root", "root@123");
+            System.out.println("connection....");
+
+            Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String query = "SELECT * FROM student where id ="+searchedId;
+            ResultSet resultSet = statement.executeQuery(query);
+            String name = "";
+            String gpa = "";
+            while(resultSet.next()){
+                name = resultSet.getString("name");
+                gpa = resultSet.getString("gpa");
+                searchedName.setText("Name : " +name);
+                searchedGpa.setText("GPA : " + gpa);
+            }
+            System.out.println("gpa :" + gpa);
+            System.out.println("Name :" + name);
+            con.close();
+//            Connection con = new Driver
+        } catch (ClassNotFoundException | SQLException e) {
+//            throw new RuntimeException(e);
+            System.out.println("ID not found");
+        }
+
+    }
+
+    private Integer parseId(String id){
+        return Integer.parseInt(String.valueOf(id));
     }
 
     public static void main(String[] args) {
