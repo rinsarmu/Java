@@ -28,7 +28,6 @@ import java.sql.*;
 import java.util.EventListener;
 
 public class HelloApplication extends Application {
-    Registration reg = new Registration();
     static String pswd = "";
     static String user = "";
     boolean numeric = false,errorId = false,
@@ -87,13 +86,9 @@ public class HelloApplication extends Application {
         registerView.setOnMouseClicked(e->{
             if (isLoggedIn) {
                                 window.setScene(scene2);
-                try {
-                    reg.start(stage);
-                    System.out.println("jd");
+                startRegistration(window);
+                System.out.println("jd");
 
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
             } else {
                 loggedType = "register";
                 window.setScene(scene1);
