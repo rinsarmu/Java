@@ -5,8 +5,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -18,21 +22,43 @@ import java.util.ArrayList;
 
 
 public class Registration extends Application {
-    FileChooser fileChooser;
-    Button btn;
+
+    String initialDirect = "/home/kuusaa/Documents";
+    String loggedType = "notepad";
     String fileLocation = " ";
+    String fileName = " ";
+    String phoneNumber = "1212121212";
+    Stage window;
+    Scene scene1, scene2, scene3, scene;
+    static Label errorPassword,errorUserName,searchedName, searchedGpa,id,name,grade;;
+    static TextArea userText,editText,idArea, nameArea, gradeArea, searchArea;;
+    static PasswordField passText;
+    static  Button login,exit, cancel,btn,searchBtn, nextBtn,prevBtn, cancelSave,saveStudent,viewStudent;
+    static  VBox  layout1, layout2, buttons,boxFields;
+    static MenuItem undo,cut,copy,paste,delete,find, findNext,findPrevious,replace,open,item2,item3,item4;
+    MenuBar menuBar;
+    static Menu menuFile,menuEdit,menuView;
+    static FileChooser fileChooser;
+    static InputStream folder,notePad,register;
+    static Image folderImage,notePadImage,registerImage;
+    static ImageView imageView,notePadView,registerView;
+    static Group root;
+    static DropShadow dropShadow;
+    static HBox  hbId,hbGrade,hbTitle,buttonStudent,hbName;
+
+
     static boolean  errorId = false; //set for error in textid
     boolean decimalFlag = false; //handle occurence of more than 2 decimal point
     boolean gradeFlag = true;
-    Stage window;
+
     static String [] listId = new String[8];
     static  double checkGrade = 0;
     boolean alertId = true;
-    TextArea idArea, nameArea, gradeArea, searchArea;
+
     int searchedId;
     int currentId = 0;
-    Label searchedName, searchedGpa;
-    Button searchBtn, nextBtn,prevBtn;
+
+
 
 
 
@@ -47,28 +73,27 @@ public class Registration extends Application {
         searchedName =  new Label();
 
 
-        Label id = new Label("ID: ");
-        Label name = new Label("Name: ");
+         id = new Label("ID: ");
+         name = new Label("Name: ");
         name.setPrefWidth(100d);
-        Label grade = new Label("Grade: ");
+         grade = new Label("Grade: ");
 
-        TextArea idArea = new TextArea();
+         idArea = new TextArea();
          nameArea = new TextArea();
          gradeArea = new TextArea();
+         cancelSave = new Button("Cancel");
+         saveStudent = new Button("Save");
+         viewStudent = new Button("view");
 
-        Button cancel = new Button("Cancel");
-        Button save = new Button("Save");
-        Button view = new Button("view");
-
-        HBox hbId = new HBox(id, idArea);
+         hbId = new HBox(id, idArea);
         hbId.setPrefWidth(400);
-        HBox hbName = new HBox(name, nameArea);
+         hbName = new HBox(name, nameArea);
         hbName.setPrefWidth(600);
 
-        HBox hbGrade = new HBox(grade, gradeArea);
+         hbGrade = new HBox(grade, gradeArea);
 
-        HBox buttons = new HBox(cancel, save, view);
-        HBox hbTitle = new HBox(new Text("Student Registration System"));
+         buttonStudent = new HBox(cancelSave, saveStudent, viewStudent);
+         hbTitle = new HBox(new Text("Student Registration System"));
         hbId.setPrefHeight(10d);
         hbGrade.setPrefHeight(38d);
         hbName.setPrefHeight(38d);
@@ -113,20 +138,20 @@ public class Registration extends Application {
         name.setAlignment(Pos.CENTER);
         name.setPadding(new Insets(10d));
         //style one by one
-        cancel.setPadding(new Insets(10d));
-        cancel.setStyle("-fx-border: none; -fx-background-color: #ff5722; -fx-border-radius: 12px; -fx-color: white;");
+        cancelSave.setPadding(new Insets(10d));
+        cancelSave.setStyle("-fx-border: none; -fx-background-color: #ff5722; -fx-border-radius: 12px; -fx-color: white;");
 
         //style one by one
 
         hbTitle.setAlignment(Pos.CENTER);
 //        VBox vb = new VBox(hbId, hbName,hbGrade, buttons);
-        VBox vb = new VBox( hbTitle,hbName, hbGrade, buttons);
+        VBox vb = new VBox( hbTitle,hbName, hbGrade, buttonStudent);
         vb.setSpacing(15d);
         vb.setPadding(new Insets(10d));
         vb.setPrefWidth(100d);
         vb.setAlignment(Pos.CENTER);
 
-        save.setOnAction(e ->{
+        saveStudent.setOnAction(e ->{
             String idEntry = idArea.getText();
             String nameEntry = nameArea.getText();
             String gradeEntry = gradeArea.getText();
@@ -135,7 +160,7 @@ public class Registration extends Application {
 
         });
 
-        view.setOnAction(e->{
+        viewStudent.setOnAction(e->{
             viewPage(stage);
 
         });
