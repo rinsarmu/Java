@@ -40,12 +40,19 @@ public class HelloApplication extends Application {
     String initialDirect = "/home/kuusaa/Documents",loggedType = "notepad",fileName = " ",fileLocation = " ",phoneNumber = "1212121212";
     Stage window;
     Scene scene1, scene2, scene3, scene,sceneStudent;
-    static Label errorPassword,errorUserName,searchedName, searchedGpa,id,name,grade;;
-    static TextArea userText,editText,idArea, nameArea, gradeArea, searchArea;;
+    static Label errorPassword,errorUserName,
+            searchedName, searchedGpa,id,name,grade;;
+    static TextArea userText,editText,idArea,
+            nameArea, gradeArea, searchArea;;
     static PasswordField passText;
-    static  Button login,exit, cancel,btn,searchBtn, nextBtn,prevBtn, cancelSave,saveStudent,viewStudent;
+    static  Button login,exit, cancel,
+            btn,searchBtn, nextBtn,prevBtn,
+            cancelSave,saveStudent,viewStudent,
+            backStudent;
     static  VBox  layout1, layout2, buttons,boxFields,vb;
-    static MenuItem undo,cut,copy,paste,delete,find, findNext,findPrevious,replace,open,item2,item3,item4;
+    static MenuItem undo,cut,copy,paste,
+            delete,find, findNext,findPrevious,
+            replace,open,item2,item3,item4;
     MenuBar menuBar;
     static Menu menuFile,menuEdit,menuView;
     static FileChooser fileChooser;
@@ -85,7 +92,7 @@ public class HelloApplication extends Application {
 
         registerView.setOnMouseClicked(e->{
             if (isLoggedIn) {
-                                window.setScene(scene2);
+                window.setScene(scene2);
                 startRegistration(window);
                 System.out.println("jd");
 
@@ -127,17 +134,14 @@ public class HelloApplication extends Application {
         login.setOnAction(e -> {
             authentication();
         });
-
         //Leave the System
         exit.setOnAction(e -> {
             System.exit(0);
         });
-
         // Open Action
         open.setOnAction(e->{
             openFromFile();
         });
-
         //        Save Action
         item2.setOnAction(e->{
             saveToFile();
@@ -151,7 +155,10 @@ public class HelloApplication extends Application {
 
         //Exit Action
         item4.setOnAction(e -> {
-            System.exit(0);
+            window.setScene(scene);
+            window.setTitle("Home Page");
+            window.show();
+//            System.exit(0);
 
         });
 
@@ -169,6 +176,11 @@ public class HelloApplication extends Application {
                 errorId = true;
             }
 
+        });
+        cancelSave.setOnAction(e->{
+            window.setScene(scene);
+            window.setTitle("Home Page");
+            window.show();
         });
 
         saveStudent.setOnAction(e ->{
@@ -202,6 +214,10 @@ public class HelloApplication extends Application {
             showData();
 
 
+        });
+        backStudent.setOnAction(e->{
+            window.setScene(scene2);
+            startRegistration(window);
         });
 
 //===========[ Action END <= ]===========
@@ -285,7 +301,7 @@ public class HelloApplication extends Application {
         id = new Label("ID: ");
         name = new Label("Name: ");
         grade = new Label("Grade: ");
-
+        backStudent = new Button("Back");
         idArea = new TextArea();
         nameArea = new TextArea();
         gradeArea = new TextArea();
@@ -318,7 +334,7 @@ public class HelloApplication extends Application {
         root.getChildren().addAll(imageView, notePadView, registerView);
 
         window.setScene(scene);
-        window.setTitle("Login Page");
+        window.setTitle("Home Page");
         window.show();
 
 //===========[  Adding childrens to the parent <= end ]===========
@@ -413,8 +429,20 @@ public class HelloApplication extends Application {
         name.setAlignment(Pos.CENTER);
         name.setPadding(new Insets(10d));
         //style one by one
+        buttonStudent.setSpacing(10);
         cancelSave.setPadding(new Insets(10d));
         cancelSave.setStyle("-fx-border: none; -fx-background-color: #ff5722; -fx-border-radius: 12px; -fx-color: white;");
+        saveStudent.setStyle("-fx-background-color: green;");
+        saveStudent.setTextFill(Color.WHITE);
+        saveStudent.setPadding(new Insets(10d));
+        viewStudent.setStyle("-fx-background-color: blue;");
+
+        viewStudent.setTextFill(Color.WHITE);
+        viewStudent.setPadding(new Insets(10d));
+//        saveStudent.setSpacing(10d);
+
+
+
 
         //style one by one
 
@@ -657,7 +685,7 @@ public class HelloApplication extends Application {
 
     private void viewPage(Stage stage){
 
-        VBox vboxSearch = new VBox(searchArea, searchBtn, searchedName, searchedGpa, nextBtn,prevBtn);
+        VBox vboxSearch = new VBox(searchArea, searchBtn, searchedName, searchedGpa, nextBtn,prevBtn,backStudent);
 
         Scene scene = new Scene(vboxSearch, 400,400);
         stage.setScene(scene);
