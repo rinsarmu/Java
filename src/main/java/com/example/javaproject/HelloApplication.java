@@ -12,11 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -41,7 +38,7 @@ public class HelloApplication extends Application {
     Stage window;
     Scene scene1, scene2, scene3, scene,sceneStudent;
     static Label errorPassword,errorUserName,
-            searchedName, searchedGpa,id,name,grade;;
+            searchedName, searchedGpa,id,name,grade, popRegister;;
     static TextArea userText,editText,idArea,
             nameArea, gradeArea, searchArea;;
     static PasswordField passText;
@@ -188,7 +185,13 @@ public class HelloApplication extends Application {
             String nameEntry = nameArea.getText();
             String gradeEntry = gradeArea.getText();
             String sampleText =  idEntry +","  + nameEntry +"," + gradeEntry;
-            saveDB();
+            checkGrade(gradeEntry);
+            System.out.println("nkkkkkkk dsjds : " + nameEntry.isEmpty() );
+            if(nameEntry.isEmpty() || gradeEntry.isEmpty() || gradeFlag){
+                popRegister.setText("Failed to save");
+            } else {
+                saveDB();
+            }
 
         });
 
@@ -199,21 +202,47 @@ public class HelloApplication extends Application {
         searchBtn.setOnAction(e->{
             System.out.println("search btn");
             System.out.println(searchArea.getText());
-            searchedId = parseId(searchArea.getText());
-            showData();
+            String s = searchArea.getText();
+            if(!s.isEmpty()){
+                searchedId = parseId(s);
+                System.out.println(">> :" + searchedId);
+                showData();
+            } else {
+                popRegister.setText("Please Input Student id");
+            }
+
         });
         nextBtn.setOnAction(e->{
-            searchedId ++;
-            showData();
+            String s = searchArea.getText();
+            if(!s.isEmpty()) {
+                popRegister.setText("Result of search");
+                if(searchedId == 0) {
+                    searchedId = parseId(s);
 
+                }
+                searchedId ++;
+                showData();
+                searchArea.setText(String.valueOf(searchedId));
 
+            } else {
+                popRegister.setText("Please Input Student id");
+
+            }
         });
 
         prevBtn.setOnAction(e->{
-            searchedId--;
-            showData();
-
-
+            String s = searchArea.getText();
+            if(!s.isEmpty() && searchedId >0) {
+                if(searchedId == 0) {
+                    searchedId = parseId(s);
+                }
+                popRegister.setText("Result of search");
+                searchedId --;
+                showData();
+                searchArea.setText(String.valueOf(searchedId));
+            } else {
+                popRegister.setText("Please Input Student id");
+            }
         });
         backStudent.setOnAction(e->{
             window.setScene(scene2);
@@ -221,6 +250,33 @@ public class HelloApplication extends Application {
         });
 
 //===========[ Action END <= ]===========
+
+    }
+
+    private void checkGrade(String gradeEntry) {
+//        String s;
+//        for(int i = 0; i < gradeEntry.length(); i++){
+//            s = String.valueOf(gradeEntry.charAt(i));
+//            if(s.equals(".")) {
+//                System.out.println("Decimal");
+//            }
+//        }
+
+            if (!gradeEntry.matches("^[0-9]+([.][0-9]{1,2})?$")) {
+                System.out.println("decimal");
+                gradeArea.setText(gradeEntry.replaceAll("[^\\d]", ""));
+            }
+            if(!gradeEntry.isEmpty()){
+                Double value = Double.parseDouble(gradeEntry);
+                if(value > 4 || value < 2.5) {
+                    gradeFlag = true;
+                } else {
+                    gradeFlag = false;
+                }
+            }
+
+
+
 
     }
 
@@ -269,12 +325,12 @@ public class HelloApplication extends Application {
         imageView = new ImageView();
 
         //Notepad Icon
-        notePad = new FileInputStream("/home/kuusaa/Pictures/image/notepad.jpg");
+        notePad = new FileInputStream("/home/kuusaa/Pictures/image/notepad.png");
         notePadImage = new Image(notePad);
         notePadView = new ImageView();
 
         //Registration Icon
-        register = new FileInputStream("/home/kuusaa/Pictures/image/register.jpg");
+        register = new FileInputStream("/home/kuusaa/Pictures/image/user.png");
         registerImage = new Image(register);
         registerView = new ImageView();
 
@@ -285,6 +341,7 @@ public class HelloApplication extends Application {
         scene2 = new Scene(layout2, 400, 500);
         scene1 = new Scene(boxFields, 400, 400);
         window = stage;
+        window.setResizable(false);
 
         dropShadow = new DropShadow();
 
@@ -300,7 +357,11 @@ public class HelloApplication extends Application {
         searchedName =  new Label();
         id = new Label("ID: ");
         name = new Label("Name: ");
+        name.setPrefWidth(70);
+//        name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
         grade = new Label("Grade: ");
+//        grade.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
+        grade.setPrefWidth(70);
         backStudent = new Button("Back");
         idArea = new TextArea();
         nameArea = new TextArea();
@@ -314,7 +375,8 @@ public class HelloApplication extends Application {
         hbGrade = new HBox(grade, gradeArea);
         buttonStudent = new HBox(cancelSave, saveStudent, viewStudent);
         hbTitle = new HBox(new Text("Student Registration System"));
-         vb = new VBox( hbTitle,hbName, hbGrade, buttonStudent);
+        popRegister = new Label(" ");
+         vb = new VBox( hbTitle, hbName, hbGrade, buttonStudent, popRegister);
         sceneStudent = new Scene(vb, 400d, 500d);
 //===========[ Variable and scene declaration <= end ]===========
 
@@ -333,7 +395,12 @@ public class HelloApplication extends Application {
 
         root.getChildren().addAll(imageView, notePadView, registerView);
 
-        window.setScene(scene);
+        scene.setFill(new LinearGradient(
+                        0, 0, 1, 1, true,                      //sizing
+                        CycleMethod.NO_CYCLE,                  //cycling
+                        new Stop(0, Color.web("#81c483")),     //colors
+                        new Stop(1, Color.web("#fcc200"))));
+        window.setScene(sceneStudent);
         window.setTitle("Home Page");
         window.show();
 
@@ -395,7 +462,7 @@ public class HelloApplication extends Application {
         //Registration
         hbId.setPrefWidth(400);
         hbName.setPrefWidth(600);
-        name.setPrefWidth(100d);
+//        name.setPrefWidth(100d);
 
 
         hbId.setPrefHeight(10d);
@@ -415,7 +482,7 @@ public class HelloApplication extends Application {
         gradeArea.setPrefWidth(300d);
         gradeArea.setPrefHeight(10d);
         grade.setPrefHeight(38d);
-        grade.setPrefWidth(60d);
+//        grade.setPrefWidth(60d);
 
         grade.setAlignment(Pos.CENTER);
         grade.setPadding(new Insets(10d));
@@ -424,10 +491,18 @@ public class HelloApplication extends Application {
         nameArea.setPrefWidth(300d);
         nameArea.setPrefHeight(10d);
         name.setPrefHeight(38d);
-        name.setPrefWidth(60d);
+//        name.setPrefWidth(60d);
 
         name.setAlignment(Pos.CENTER);
         name.setPadding(new Insets(10d));
+
+        searchArea.setPrefWidth(280d);
+        searchArea.setPrefHeight(10);
+
+
+        searchBtn.setPrefHeight(50);
+        name.setPrefHeight(38d);
+
         //style one by one
         buttonStudent.setSpacing(10);
         cancelSave.setPadding(new Insets(10d));
@@ -435,10 +510,27 @@ public class HelloApplication extends Application {
         saveStudent.setStyle("-fx-background-color: green;");
         saveStudent.setTextFill(Color.WHITE);
         saveStudent.setPadding(new Insets(10d));
-        viewStudent.setStyle("-fx-background-color: blue;");
 
+        viewStudent.setStyle("-fx-background-color: blue;");
         viewStudent.setTextFill(Color.WHITE);
         viewStudent.setPadding(new Insets(10d));
+
+        searchBtn.setStyle("-fx-background-color: blue;");
+        searchBtn.setTextFill(Color.WHITE);
+        searchBtn.setPadding(new Insets(10d));
+
+        nextBtn.setStyle("-fx-background-color: #002147;");
+        nextBtn.setTextFill(Color.WHITE);
+        nextBtn.setPadding(new Insets(10d));
+
+        prevBtn.setStyle("-fx-background-color: #002147;");
+        prevBtn.setTextFill(Color.WHITE);
+        prevBtn.setPadding(new Insets(10d));
+
+        backStudent.setStyle("-fx-background-color: #009DDB");
+        backStudent.setTextFill(Color.WHITE);
+        backStudent.setPadding(new Insets(10d));
+
 //        saveStudent.setSpacing(10d);
 
 
@@ -674,19 +766,46 @@ public class HelloApplication extends Application {
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, nameArea.getText());
             preparedStatement.setString(2, gradeArea.getText());
-            preparedStatement.executeUpdate();
+            int check = preparedStatement.executeUpdate();
+            if(check == 1) {
+                System.out.println("Registered");
+                popRegister.setText("Registered");
+            } else {
+                popRegister.setText("Please Try again");
+
+            }
+
 
             con.close();
 //            Connection con = new Driver
         } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
+            popRegister.setText("Please Try again");
+
         }
     }
 
     private void viewPage(Stage stage){
 
-        VBox vboxSearch = new VBox(searchArea, searchBtn, searchedName, searchedGpa, nextBtn,prevBtn,backStudent);
+        HBox searchHb = new HBox(searchArea,searchBtn);
+        HBox threeButtons = new HBox(prevBtn,nextBtn,backStudent);
 
+        searchHb.setSpacing(20);
+//        searchHb.setPadding(new Insets(10));
+        searchHb.setPrefHeight(38d);
+
+        threeButtons.setSpacing(20);
+        threeButtons.setPadding(new Insets(10));
+        threeButtons.setPrefHeight(38d);
+        popRegister.setText(" ");
+
+        HBox resultHB = new HBox(popRegister);
+        VBox resultData = new VBox(searchedName, searchedGpa);
+
+        VBox vboxSearch = new VBox(searchHb, resultHB, resultData, threeButtons);
+
+        vboxSearch.setPadding(new Insets(10));
+        vboxSearch.setSpacing(10);
+        vboxSearch.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vboxSearch, 400,400);
         stage.setScene(scene);
         stage.show();
@@ -700,6 +819,7 @@ public class HelloApplication extends Application {
             Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/Registration","root", "root@123");
             System.out.println("connection....");
 
+            popRegister.setText("Result of Search");
             Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             String query = "SELECT * FROM student where id ="+searchedId;
             ResultSet resultSet = statement.executeQuery(query);
